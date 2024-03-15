@@ -14,12 +14,19 @@
 
 # [START cloudbuild_npm_node]
 steps:
-  # Install dependencies
-  - name: node
-    entrypoint: npm
+  # Instalar dependencias usando npm
+  - name: 'gcr.io/cloud-builders/npm'
     args: ['install']
-  # Run custom commands
-  - name: node
-    entrypoint: npm
+
+  # Ejecutar el script de compilación
+  - name: 'gcr.io/cloud-builders/npm'
     args: ['run', 'build']
+
+  # Construir la imagen del contenedor
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/eth-cloud-415823/blockchain-cloud', '.']
+
+  # Subir la imagen al Registro de Contenedores de Google Cloud
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/eth-cloud-415823/blockchain-cloud']
 # [END cloudbuild_npm_node]
